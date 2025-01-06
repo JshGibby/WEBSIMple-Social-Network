@@ -1,0 +1,759 @@
+<html><head><base href="https://example.com">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NextGen Social</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            background-color: #f0f2f5;
+            display: flex;
+        }
+
+        nav {
+            width: 250px;
+            background-color: #fff;
+            border-right: 1px solid #ddd;
+            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            overflow-y: auto; 
+            height: 100vh; 
+            position: sticky; 
+            top: 0;
+        }
+
+        nav a {
+            display: block;
+            padding: 10px 20px;
+            text-decoration: none;
+            color: #333;
+            transition: background-color 0.3s ease;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        nav a:hover {
+            background-color: #e9ecef;
+        }
+
+        main {
+            flex-grow: 1;
+            padding: 20px;
+        }
+
+        .post-creator {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid black;
+        }
+
+        .post-creator textarea {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            resize: vertical;
+        }
+
+        .post-creator .attachments {
+            margin-bottom: 10px;
+        }
+
+        .post-creator .attachments button {
+            background: none;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 8px 10px;
+            margin-right: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .post-creator .attachments button:hover {
+            background-color: #f0f0f0;
+        }
+
+        .post-creator button.post-button {
+            background-color: #1877f2;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .post-creator button.post-button:hover {
+            background-color: #166ada;
+        }
+
+        .post {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid black;
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            justify-content: space-between;
+        }
+
+        .post-header img {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .post-header span {
+            font-weight: bold;
+        }
+
+        .post-header time {
+            font-size: 12px;
+            color: #666;
+            margin-left: 10px;
+        }
+
+        .post p {
+            margin-top: 0;
+        }
+
+        .post img, .post video {
+            max-width: 100%;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+
+        .post-footer {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #ddd;
+        }
+
+        .post-footer button {
+            background: none;
+            border: none;
+            padding: 5px 10px;
+            font-size: 14px;
+            cursor: pointer;
+            color: #666;
+            transition: color 0.3s ease;
+        }
+
+        .post-footer button:hover {
+            color: #333;
+        }
+
+        .reactions {
+            display: flex;
+            align-items: center;
+            margin-top: 5px;
+        }
+
+        .reactions button {
+            background: none;
+            border: none;
+            padding: 5px 10px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .delete-button {
+            background: none;
+            border: none;
+            padding: 5px 10px;
+            font-size: 14px;
+            cursor: pointer;
+            color: #666;
+            transition: color 0.3s ease;
+        }
+
+        .delete-button:hover {
+            color: #333;
+        }
+
+        .comment-button {
+            margin-top: 10px;
+            background: none;
+            border: none;
+            padding: 5px 10px;
+            font-size: 14px;
+            cursor: pointer;
+            color: #666;
+            transition: color 0.3s ease;
+        }
+
+        .comment-button:hover {
+            color: #333;
+        }
+
+        .comment-area {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+        }
+
+        .comment-textarea {
+            width: calc(100% - 40px);
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 2px solid black;
+            border-radius: 4px;
+            font-size: 16px;
+            resize: vertical;
+        }
+
+        .comment-buttons {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .comment-cancel-button {
+            background: none;
+            border: none;
+            padding: 5px 10px;
+            font-size: 14px;
+            cursor: pointer;
+            color: #666;
+            transition: color 0.3s ease;
+        }
+
+        .comment-cancel-button:hover {
+            color: #333;
+        }
+
+        .comment-reply-button {
+            background-color: #1877f2;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .comment-reply-button:hover {
+            background-color: #166ada;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="https://example.com/all-posts">All Posts</a>
+        <a href="https://example.com/top-posts">Top Posts</a>
+        <a href="https://example.com/live-posts">Live Posts</a>
+        <a href="https://example.com/videos">Videos</a>
+        <a href="https://example.com/images">Images</a>
+        <a href="https://example.com/polls">Polls</a>
+        <a href="https://example.com/gifs">Gifs</a>
+        <a href="https://example.com/emotions">Emotions</a>
+        <a href="https://example.com/hashtags">Hashtags</a>
+    </nav>
+    <main>
+        <div class="top-middle">NextGen Social</div>
+        <div class="post-creator">
+            <textarea id="post-text" placeholder="What&apos;s on your mind?"></textarea>
+            <div class="attachments">
+                <button onclick="attach(&apos;image&apos;)">Attach Image</button>
+                <button onclick="attach(&apos;video&apos;)">Attach Video</button>
+                <input type="file" id="media-upload" style="display: none;">
+            </div>
+            <button class="post-button" onclick="post()">Post</button>
+        </div>
+
+        <div id="newsfeed">
+            <!-- Posts will be added here -->
+        </div>
+    </main>
+
+    <script>const room = new WebsimSocket();
+let posts = [];
+room.party.subscribe(peers => {
+  console.log(peers);
+  for (const clientId in peers) {
+    const {
+      avatarUrl,
+      username
+    } = peers[clientId];
+    console.log(avatarUrl, username);
+  }
+});
+async function getUserProfile() {
+  try {
+    const response = await fetch('https://example.com/api/v1/users/@me', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      }
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching user profile:', error);
+    return 'Error occurred';
+  }
+}
+function attach(type) {
+  const input = document.getElementById('media-upload');
+  input.click();
+  input.onchange = function () {
+    const file = input.files[0];
+    if (file) {
+      console.log(`User wants to attach a ${type}:`, file.name);
+    }
+  };
+}
+function post() {
+  const text = document.getElementById('post-text').value;
+  if (text.trim() !== "") {
+    getUserProfile().then(data => {
+      const currentUsername = room.party.client.username;
+      const newPost = {
+        text: text,
+        timestamp: new Date(),
+        username: currentUsername,
+        profileImage: `https://images.websim.ai/avatar/${currentUsername}`,
+        reactions: {
+          love: 0,
+          like: 0,
+          happy: 0,
+          sad: 0,
+          angry: 0,
+          surprised: 0
+        },
+        usersWhoReacted: {},
+        comments: []
+      };
+      posts.unshift(newPost);
+      document.getElementById('post-text').value = '';
+      renderPosts();
+    });
+  }
+}
+function deletePost(index) {
+  posts.splice(index, 1);
+  renderPosts();
+}
+function renderPosts() {
+  const newsfeed = document.getElementById('newsfeed');
+  newsfeed.innerHTML = '';
+  posts.forEach((post, index) => {
+    const postDiv = document.createElement('div');
+    postDiv.classList.add('post');
+    const postHeader = document.createElement('div');
+    postHeader.classList.add('post-header');
+    const profileImage = document.createElement('img');
+    profileImage.src = post.profileImage;
+    profileImage.onclick = function () {
+      getUserInfo(post.username);
+    };
+    const usernameSpan = document.createElement('span');
+    usernameSpan.textContent = post.username;
+    usernameSpan.onclick = function () {
+      getUserInfo(post.username);
+    };
+    const postHeaderContainer = document.createElement('div');
+    postHeaderContainer.style.display = 'flex';
+    postHeaderContainer.style.alignItems = 'center';
+    postHeaderContainer.style.marginBottom = '10px';
+    postHeaderContainer.appendChild(profileImage);
+    postHeaderContainer.appendChild(usernameSpan);
+    usernameSpan.style.marginLeft = '10px';
+    const timestampSpan = document.createElement('span');
+    timestampSpan.id = `timestamp-${index}`;
+    timestampSpan.textContent = getTimeDiff(post.timestamp);
+    timestampSpan.style.marginLeft = '10px';
+    postHeaderContainer.appendChild(timestampSpan);
+    setInterval(function () {
+      const timestampSpan = document.getElementById(`timestamp-${index}`);
+      timestampSpan.textContent = getTimeDiff(post.timestamp);
+    }, 1000);
+    const deleteButton = document.createElement('button');
+    deleteButton.textContent = 'Delete';
+    deleteButton.classList.add('delete-button');
+    deleteButton.onclick = function () {
+      deletePost(index);
+    };
+    deleteButton.style.position = 'absolute';
+    deleteButton.style.right = '10px';
+    deleteButton.style.top = '10px';
+    postHeader.appendChild(postHeaderContainer);
+    postHeader.appendChild(deleteButton);
+    const postParagraph = document.createElement('p');
+    postParagraph.textContent = post.text;
+    postDiv.appendChild(postHeader);
+    postDiv.appendChild(postParagraph);
+    const reactionsDiv = document.createElement('div');
+    reactionsDiv.classList.add('reactions');
+    const loveButton = document.createElement('button');
+    loveButton.textContent = `❤️ ${post.reactions.love}`;
+    loveButton.onclick = function () {
+      const currentUsername = room.party.client.username;
+      const postIndex = posts.indexOf(post);
+      if (post.usersWhoReacted && post.usersWhoReacted.love && post.usersWhoReacted.love.includes(currentUsername)) {
+        post.reactions.love -= 1;
+        post.usersWhoReacted.love = post.usersWhoReacted.love.filter(username => username !== currentUsername);
+      } else {
+        post.reactions.love += 1;
+        if (!post.usersWhoReacted) post.usersWhoReacted = {};
+        if (!post.usersWhoReacted.love) post.usersWhoReacted.love = [];
+        post.usersWhoReacted.love.push(currentUsername);
+      }
+      loveButton.textContent = `❤️ ${post.reactions.love}`;
+      renderPosts();
+    };
+    reactionsDiv.appendChild(loveButton);
+    const likeButton = document.createElement('button');
+    likeButton.textContent = `👍 ${post.reactions.like}`;
+    likeButton.onclick = function () {
+      const currentUsername = room.party.client.username;
+      const postIndex = posts.indexOf(post);
+      if (post.usersWhoReacted && post.usersWhoReacted.like && post.usersWhoReacted.like.includes(currentUsername)) {
+        post.reactions.like -= 1;
+        post.usersWhoReacted.like = post.usersWhoReacted.like.filter(username => username !== currentUsername);
+      } else {
+        post.reactions.like += 1;
+        if (!post.usersWhoReacted) post.usersWhoReacted = {};
+        if (!post.usersWhoReacted.like) post.usersWhoReacted.like = [];
+        post.usersWhoReacted.like.push(currentUsername);
+      }
+      likeButton.textContent = `👍 ${post.reactions.like}`;
+      renderPosts();
+    };
+    reactionsDiv.appendChild(likeButton);
+    const happyButton = document.createElement('button');
+    happyButton.textContent = `😊 ${post.reactions.happy}`;
+    happyButton.onclick = function () {
+      const currentUsername = room.party.client.username;
+      const postIndex = posts.indexOf(post);
+      if (post.usersWhoReacted && post.usersWhoReacted.happy && post.usersWhoReacted.happy.includes(currentUsername)) {
+        post.reactions.happy -= 1;
+        post.usersWhoReacted.happy = post.usersWhoReacted.happy.filter(username => username !== currentUsername);
+      } else {
+        post.reactions.happy += 1;
+        if (!post.usersWhoReacted) post.usersWhoReacted = {};
+        if (!post.usersWhoReacted.happy) post.usersWhoReacted.happy = [];
+        post.usersWhoReacted.happy.push(currentUsername);
+      }
+      happyButton.textContent = `😊 ${post.reactions.happy}`;
+      renderPosts();
+    };
+    reactionsDiv.appendChild(happyButton);
+    const sadButton = document.createElement('button');
+    sadButton.textContent = `😔 ${post.reactions.sad}`;
+    sadButton.onclick = function () {
+      const currentUsername = room.party.client.username;
+      const postIndex = posts.indexOf(post);
+      if (post.usersWhoReacted && post.usersWhoReacted.sad && post.usersWhoReacted.sad.includes(currentUsername)) {
+        post.reactions.sad -= 1;
+        post.usersWhoReacted.sad = post.usersWhoReacted.sad.filter(username => username !== currentUsername);
+      } else {
+        post.reactions.sad += 1;
+        if (!post.usersWhoReacted) post.usersWhoReacted = {};
+        if (!post.usersWhoReacted.sad) post.usersWhoReacted.sad = [];
+        post.usersWhoReacted.sad.push(currentUsername);
+      }
+      sadButton.textContent = `😔 ${post.reactions.sad}`;
+      renderPosts();
+    };
+    reactionsDiv.appendChild(sadButton);
+    const angryButton = document.createElement('button');
+    angryButton.textContent = `😠 ${post.reactions.angry}`;
+    angryButton.onclick = function () {
+      const currentUsername = room.party.client.username;
+      const postIndex = posts.indexOf(post);
+      if (post.usersWhoReacted && post.usersWhoReacted.angry && post.usersWhoReacted.angry.includes(currentUsername)) {
+        post.reactions.angry -= 1;
+        post.usersWhoReacted.angry = post.usersWhoReacted.angry.filter(username => username !== currentUsername);
+      } else {
+        post.reactions.angry += 1;
+        if (!post.usersWhoReacted) post.usersWhoReacted = {};
+        if (!post.usersWhoReacted.angry) post.usersWhoReacted.angry = [];
+        post.usersWhoReacted.angry.push(currentUsername);
+      }
+      angryButton.textContent = `😠 ${post.reactions.angry}`;
+      renderPosts();
+    };
+    reactionsDiv.appendChild(angryButton);
+    const surprisedButton = document.createElement('button');
+    surprisedButton.textContent = `😮 ${post.reactions.surprised}`;
+    surprisedButton.onclick = function () {
+      const currentUsername = room.party.client.username;
+      const postIndex = posts.indexOf(post);
+      if (post.usersWhoReacted && post.usersWhoReacted.surprised && post.usersWhoReacted.surprised.includes(currentUsername)) {
+        post.reactions.surprised -= 1;
+        post.usersWhoReacted.surprised = post.usersWhoReacted.surprised.filter(username => username !== currentUsername);
+      } else {
+        post.reactions.surprised += 1;
+        if (!post.usersWhoReacted) post.usersWhoReacted = {};
+        if (!post.usersWhoReacted.surprised) post.usersWhoReacted.surprised = [];
+        post.usersWhoReacted.surprised.push(currentUsername);
+      }
+      surprisedButton.textContent = `😮 ${post.reactions.surprised}`;
+      renderPosts();
+    };
+    reactionsDiv.appendChild(surprisedButton);
+    const postFooter = document.createElement('div');
+    postFooter.classList.add('post-footer');
+    postFooter.appendChild(reactionsDiv);
+    const commentButton = document.createElement('button');
+    commentButton.textContent = 'Comment';
+    commentButton.classList.add('comment-button');
+    commentButton.onclick = function () {
+      const commentArea = this.nextElementSibling;
+      if (commentArea.style.display === 'block') {
+        commentArea.style.display = 'none';
+      } else {
+        commentArea.style.display = 'block';
+      }
+    };
+    postFooter.appendChild(commentButton);
+    postDiv.appendChild(postFooter);
+    const commentArea = document.createElement('div');
+    commentArea.classList.add('comment-area');
+    const commentTextarea = document.createElement('textarea');
+    commentTextarea.classList.add('comment-textarea');
+    commentArea.appendChild(commentTextarea);
+    const commentButtons = document.createElement('div');
+    commentButtons.classList.add('comment-buttons');
+    commentArea.appendChild(commentButtons);
+    const commentCancelButton = document.createElement('button');
+    commentCancelButton.textContent = 'Cancel';
+    commentCancelButton.classList.add('comment-cancel-button');
+    commentCancelButton.onclick = function () {
+      commentArea.style.display = 'none';
+    };
+    commentButtons.appendChild(commentCancelButton);
+    const commentReplyButton = document.createElement('button');
+    commentReplyButton.textContent = 'Reply';
+    commentReplyButton.classList.add('comment-reply-button');
+    commentReplyButton.onclick = function () {
+      const commentText = commentTextarea.value;
+      if (commentText.trim() !== "") {
+        const newComment = {
+          text: commentText,
+          timestamp: new Date(),
+          username: room.party.client.username,
+          profileImage: `https://images.websim.ai/avatar/${room.party.client.username}`,
+          reactions: {
+            love: 0,
+            like: 0,
+            happy: 0,
+            sad: 0,
+            angry: 0,
+            surprised: 0
+          },
+          usersWhoReacted: {}
+        };
+        if (!post.comments) post.comments = [];
+        post.comments.push(newComment);
+        renderComments(post, postDiv);
+        commentTextarea.value = '';
+        commentArea.style.display = 'none';
+      }
+    };
+    commentButtons.appendChild(commentReplyButton);
+    postDiv.appendChild(commentArea);
+    newsfeed.appendChild(postDiv);
+  });
+}
+function getTimeDiff(timestamp) {
+  const currentTime = new Date();
+  const timeDiff = currentTime - timestamp;
+  const seconds = Math.floor(timeDiff / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const hours = Math.floor(minutes / 60);
+  const days = Math.floor(hours / 24);
+  if (seconds < 60) {
+    return `Posted ${seconds} seconds ago`;
+  } else if (minutes < 60) {
+    return `Posted ${minutes} minutes ago`;
+  } else if (hours < 24) {
+    return `Posted ${hours} hours ago`;
+  } else {
+    return `Posted ${days} days ago`;
+  }
+}
+function getUserInfo(username) {
+  const UserProfileUrl = `https://websim.ai/@${username}`;
+  window.open(UserProfileUrl, '_blank');
+}
+function renderComments(post, postDiv) {
+  const commentsDiv = document.createElement('div');
+  commentsDiv.style.marginTop = '10px';
+  postDiv.appendChild(commentsDiv);
+  if (post.comments) {
+    post.comments.forEach((comment, index) => {
+      const commentDiv = document.createElement('div');
+      commentDiv.style.padding = '10px';
+      commentDiv.style.borderBottom = '1px solid #ddd';
+      commentsDiv.appendChild(commentDiv);
+      const commentHeader = document.createElement('div');
+      commentHeader.style.display = 'flex';
+      commentHeader.style.alignItems = 'center';
+      commentHeader.style.marginBottom = '10px';
+      commentDiv.appendChild(commentHeader);
+      const profileImage = document.createElement('img');
+      profileImage.src = comment.profileImage;
+      profileImage.style.width = '30px';
+      profileImage.style.height = '30px';
+      profileImage.style.borderRadius = '50%';
+      profileImage.style.marginRight = '10px';
+      commentHeader.appendChild(profileImage);
+      const usernameSpan = document.createElement('span');
+      usernameSpan.textContent = comment.username;
+      usernameSpan.style.fontWeight = 'bold';
+      usernameSpan.style.marginRight = '10px';
+      commentHeader.appendChild(usernameSpan);
+      const timestampSpan = document.createElement('span');
+      timestampSpan.id = `comment-timestamp-${index}`;
+      timestampSpan.textContent = getTimeDiff(comment.timestamp);
+      commentHeader.appendChild(timestampSpan);
+      setInterval(function () {
+        const timestampSpan = document.getElementById(`comment-timestamp-${index}`);
+        timestampSpan.textContent = getTimeDiff(comment.timestamp);
+      }, 1000);
+      const commentText = document.createElement('p');
+      commentText.textContent = comment.text;
+      commentDiv.appendChild(commentText);
+      const commentReactionsDiv = document.createElement('div');
+      commentReactionsDiv.style.display = 'flex';
+      commentReactionsDiv.style.alignItems = 'center';
+      commentReactionsDiv.style.marginTop = '5px';
+      const commentFooter = document.createElement('div');
+      commentFooter.classList.add('post-footer');
+      commentDiv.appendChild(commentFooter);
+      commentFooter.appendChild(commentReactionsDiv);
+      const loveButton = document.createElement('button');
+      loveButton.textContent = `❤️ ${comment.reactions ? comment.reactions.love : 0}`;
+      loveButton.onclick = function () {
+        const currentUsername = room.party.client.username;
+        const commentIndex = post.comments.indexOf(comment);
+        if (comment.usersWhoReacted && comment.usersWhoReacted.love && comment.usersWhoReacted.love.includes(currentUsername)) {
+          comment.reactions.love -= 1;
+          comment.usersWhoReacted.love = comment.usersWhoReacted.love.filter(username => username !== currentUsername);
+        } else {
+          comment.reactions.love += 1;
+          if (!comment.usersWhoReacted) comment.usersWhoReacted = {};
+          if (!comment.usersWhoReacted.love) comment.usersWhoReacted.love = [];
+          comment.usersWhoReacted.love.push(currentUsername);
+        }
+        loveButton.textContent = `❤️ ${comment.reactions.love}`;
+        renderComments(post, postDiv);
+      };
+      commentReactionsDiv.appendChild(loveButton);
+      const likeButton = document.createElement('button');
+      likeButton.textContent = `👍 ${comment.reactions ? comment.reactions.like : 0}`;
+      likeButton.onclick = function () {
+        const currentUsername = room.party.client.username;
+        const commentIndex = post.comments.indexOf(comment);
+        if (comment.usersWhoReacted && comment.usersWhoReacted.like && comment.usersWhoReacted.like.includes(currentUsername)) {
+          comment.reactions.like -= 1;
+          comment.usersWhoReacted.like = comment.usersWhoReacted.like.filter(username => username !== currentUsername);
+        } else {
+          comment.reactions.like += 1;
+          if (!comment.usersWhoReacted) comment.usersWhoReacted = {};
+          if (!comment.usersWhoReacted.like) comment.usersWhoReacted.like = [];
+          comment.usersWhoReacted.like.push(currentUsername);
+        }
+        likeButton.textContent = `👍 ${comment.reactions.like}`;
+        renderComments(post, postDiv);
+      };
+      commentReactionsDiv.appendChild(likeButton);
+      const happyButton = document.createElement('button');
+      happyButton.textContent = `😊 ${comment.reactions ? comment.reactions.happy : 0}`;
+      happyButton.onclick = function () {
+        const currentUsername = room.party.client.username;
+        const commentIndex = post.comments.indexOf(comment);
+        if (comment.usersWhoReacted && comment.usersWhoReacted.happy && comment.usersWhoReacted.happy.includes(currentUsername)) {
+          comment.reactions.happy -= 1;
+          comment.usersWhoReacted.happy = comment.usersWhoReacted.happy.filter(username => username !== currentUsername);
+        } else {
+          comment.reactions.happy += 1;
+          if (!comment.usersWhoReacted) comment.usersWhoReacted = {};
+          if (!comment.usersWhoReacted.happy) comment.usersWhoReacted.happy = [];
+          comment.usersWhoReacted.happy.push(currentUsername);
+        }
+        happyButton.textContent = `😊 ${comment.reactions.happy}`;
+        renderComments(post, postDiv);
+      };
+      commentReactionsDiv.appendChild(happyButton);
+      const sadButton = document.createElement('button');
+      sadButton.textContent = `😔 ${comment.reactions ? comment.reactions.sad : 0}`;
+      sadButton.onclick = function () {
+        const currentUsername = room.party.client.username;
+        const commentIndex = post.comments.indexOf(comment);
+        if (comment.usersWhoReacted && comment.usersWhoReacted.sad && comment.usersWhoReacted.sad.includes(currentUsername)) {
+          comment.reactions.sad -= 1;
+          comment.usersWhoReacted.sad = comment.usersWhoReacted.sad.filter(username => username !== currentUsername);
+        } else {
+          comment.reactions.sad += 1;
+          if (!comment.usersWhoReacted) comment.usersWhoReacted = {};
+          if (!comment.usersWhoReacted.sad) comment.usersWhoReacted.sad = [];
+          comment.usersWhoReacted.sad.push(currentUsername);
+        }
+        sadButton.textContent = `😔 ${comment.reactions.sad}`;
+        renderComments(post, postDiv);
+      };
+      commentReactionsDiv.appendChild(sadButton);
+      const angryButton = document.createElement('button');
+      angryButton.textContent = `😠 ${comment.reactions ? comment.reactions.angry : 0}`;
+      angryButton.onclick = function () {
+        const currentUsername = room.party.client.username;
+        const commentIndex = post.comments.indexOf(comment);
+        if (comment.usersWhoReacted && comment.usersWhoReacted.angry && comment.usersWhoReacted.angry.includes(currentUsername)) {
+          comment.reactions.angry -= 1;
+          comment.usersWhoReacted.angry = comment.usersWhoReacted.angry.filter(username => username !== currentUsername);
+        } else {
+          comment.reactions.angry += 1;
+          if (!comment.usersWhoReacted) comment.usersWhoReacted = {};
+          if (!comment.usersWhoReacted.angry) comment.usersWhoReacted.angry = [];
+          comment.usersWhoReacted.angry.push(currentUsername);
+        }
+        angryButton.textContent = `😠 ${comment.reactions.angry}`;
+        renderComments(post, postDiv);
+      };
+      commentReactionsDiv.appendChild(angryButton);
+      const surprisedButton = document.createElement('button');
+      surprisedButton.textContent = `😮 ${comment.reactions ? comment.reactions.surprised : 0}`;
+      surprisedButton.onclick = function () {
+        const currentUsername = room.party.client.username;
+        const commentIndex = post.comments.indexOf(comment);
+        if (comment.usersWhoReacted && comment.usersWhoReacted.surprised && comment.usersWhoReacted.surprised.includes(currentUsername)) {
+          comment.reactions.surprised -= 1;
+          comment.usersWhoReacted.surprised = comment.usersWhoReacted.surprised.filter(username => username !== currentUsername);
+        } else {
+          comment.reactions.surprised += 1;
+          if (!comment.usersWhoReacted) comment.usersWhoReacted = {};
+          if (!comment.usersWhoReacted.surprised) comment.usersWhoReacted.surprised = [];
+          comment.usersWhoReacted.surprised.push(currentUsername);
+        }
+        surprisedButton.textContent = `😮 ${comment.reactions.surprised}`;
+        renderComments(post, postDiv);
+      };
+      commentReactionsDiv.appendChild(surprisedButton);
+    });
+  }
+}</script>
+</body>
+</html>
